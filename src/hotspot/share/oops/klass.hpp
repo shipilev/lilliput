@@ -650,7 +650,8 @@ public:
   // These functions describe behavior for the oop not the KLASS.
 
   // actual oop size of obj in memory in word size.
-  virtual size_t oop_size(oop obj) const = 0;
+  virtual size_t oop_size(oop obj, markWord mark) const = 0;
+  size_t oop_size(oop obj) const;
 
   // Size of klass in word size.
   virtual int size() const = 0;
@@ -798,10 +799,11 @@ public:
 
   static void on_secondary_supers_verification_failure(Klass* super, Klass* sub, bool linear_result, bool table_result, const char* msg);
 
-  virtual int hash_offset_in_bytes(oop obj) const = 0;
+  virtual int hash_offset_in_bytes(oop obj, markWord m) const = 0;
+
   static int kind_offset_in_bytes() { return (int)offset_of(Klass, _kind); }
 
-  bool expand_for_hash(oop obj) const;
+  bool expand_for_hash(oop obj, markWord m) const;
 };
 
 #endif // SHARE_OOPS_KLASS_HPP
